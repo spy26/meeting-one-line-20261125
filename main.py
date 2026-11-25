@@ -18,6 +18,12 @@ ENTRY = (
 def main() -> None:
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
+    if not ENTRY or not ENTRY.strip():
+        raise SystemExit("error: entry must not be empty or whitespace only")
+    if "\n" in ENTRY or "\r" in ENTRY:
+        raise SystemExit("error: entry must be a single line")
+    if not 1 <= len(ENTRY) <= 200:
+        raise SystemExit("error: entry must be between 1 and 200 characters")
     with open(os.path.join(out_dir, "entry.txt"), "w",
               encoding="utf-8", newline="") as f:
         f.write(ENTRY)
